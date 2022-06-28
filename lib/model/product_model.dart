@@ -1,37 +1,21 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class ProductModel {
   List<Products>? products;
   int? total;
-  String? skip;
+  int? skip;
   int? limit;
-  static ProductModel fromSnap(dynamic snap) {
-    print(ProductModel(
-      products: snap['products'],
-      total: snap['total'],
-      skip: snap['skip'],
-      limit: snap['limit'],
-    ).toString());
-    return ProductModel(
-      products: snap['products'],
-      total: snap['total'],
-      skip: snap['skip'],
-      limit: snap['limit'],
-    );
-  }
 
   ProductModel({this.products, this.total, this.skip, this.limit});
 
-  ProductModel.fromJson(json) {
+  ProductModel.fromJson(Map<String, dynamic> json) {
     if (json['products'] != null) {
       products = <Products>[];
       json['products'].forEach((v) {
-        products!.add(Products.fromJson(v));
+        products!.add(new Products.fromJson(v));
       });
     }
     total = json['total'];
     skip = json['skip'];
     limit = json['limit'];
-    print(json);
   }
 
   Map<String, dynamic> toJson() {
@@ -43,11 +27,6 @@ class ProductModel {
     data['skip'] = this.skip;
     data['limit'] = this.limit;
     return data;
-  }
-
-  @override
-  String toString() {
-    return 'ProductModel(products: $products, total: $total, skip: $skip, limit: $limit)';
   }
 }
 
@@ -77,7 +56,7 @@ class Products {
       this.thumbnail,
       this.images});
 
-  Products.fromJson(json) {
+  Products.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     description = json['description'];

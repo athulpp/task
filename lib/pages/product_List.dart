@@ -5,18 +5,23 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shop/model/product_model.dart';
 
-class ProductList extends StatelessWidget {
+class ProductList extends StatefulWidget {
   ProductList({Key? key}) : super(key: key);
 
+  @override
+  State<ProductList> createState() => _ProductListState();
+}
+
+class _ProductListState extends State<ProductList> {
   Future<ProductModel> getProductsApi() async {
     final response =
         await http.get(Uri.parse('https://dummyjson.com/products'));
-    var data = jsonDecode(response.body.toString());
+    Map<String, dynamic> data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
-      // print();
-      return ProductModel.fromSnap(data);
+      print(data);
+      return ProductModel.fromJson(data);
     } else {
-      return ProductModel(products: []);
+      return ProductModel.fromJson(data);
     }
   }
 
@@ -26,7 +31,11 @@ class ProductList extends StatelessWidget {
         future: getProductsApi(),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
-            return Container();
+            return Container(
+              child: Center(
+                child: Text('No data'),
+              ),
+            );
           }
           print(snapshot.data!.products!.length);
           return ListView.separated(
